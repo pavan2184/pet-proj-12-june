@@ -1,8 +1,28 @@
 from fastapi import FastAPI, HTTPException
 from app.models import PetCreate, Pet
 from app import crud
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+origins = [
+    "http://localhost",
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "http://localhost:5173",      
+    "http://192.168.30.1:5173",
+    "http://192.168.137.1:5173",
+    "http://192.168.29.139:5173",
+    "http://172.27.160.1:5173"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # React dev server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/pets", response_model=Pet)
 def add_pet(pet: PetCreate):
